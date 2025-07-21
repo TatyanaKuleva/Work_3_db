@@ -1,0 +1,42 @@
+[
+    {
+        "employer": "Major Auto (Мэйджор Авто)",
+        "vacancy_count": 380
+    },
+    {
+        "employer": "РОЛЬФ, группа компаний",
+        "vacancy_count": 126
+    },
+    {
+        "employer": "Компания Прагматика",
+        "vacancy_count": 52
+    },
+    {
+        "employer": "Максимум, Автомобильный холдинг",
+        "vacancy_count": 27
+    },
+    {
+        "employer": "АВАНГАРД",
+        "vacancy_count": 17
+    },
+    {
+        "employer": "Авто-Стиль",
+        "vacancy_count": 15
+    },
+    {
+        "employer": "М2О",
+        "vacancy_count": 9
+    },
+    {
+        "employer": "Карс Фэмили",
+        "vacancy_count": 9
+    },
+    {
+        "employer": "Экспо Кар",
+        "vacancy_count": 5
+    },
+    {
+        "employer": "МЕГА-АВТО, Группа компаний",
+        "vacancy_count": 0
+    }
+]
