@@ -1,4 +1,7 @@
 import json
+
+from mypyc.transform.exceptions import primitive_call
+
 from src.parser import HeadHunterAPI, Parser
 from src.utils import get_users_settings
 from src.config import config
@@ -31,32 +34,46 @@ def main():
 
     manager = DBManager(**params, name_base=name_search)
 
-    count_vacancies = manager.get_companies_and_vacancies_count()
-    with open('result/count_vacancies.json', 'w', encoding='utf-8') as f:
-        json.dump(count_vacancies, f, indent=4, ensure_ascii=False)
 
-    all_vacancies = manager.get_all_vacancies()
-    with open('result/all_vacancies.json', 'w', encoding='utf-8') as f:
-        json.dump(all_vacancies, f, indent=4, ensure_ascii=False)
+    while True:
+        user_input_choose_action = int(input("выберитe, что нужно сделать:\n"
+                                         "1. Получить список компаний и кол-во вакансий у каждой компании\n"
+                                         "2. Получить список всех вакансий\n"
+                                         "3. Получить среднюю зарплату по вакансии\n"
+                                         "4. Получить список вакансий, у которых зарплата выше средней\n"
+                                         "5. получить список всех вакансий по фразе\n"
+                                            "6. Завершить "))
 
-    avg_salary = manager.get_avg_salary()
-    with open('result/avg_salary.json', 'w', encoding='utf-8') as f:
-        json.dump(avg_salary, f, indent=4, ensure_ascii=False)
-
-    higher_salary = manager.get_vacancies_with_higher_salary()
-    with open('result/higher_salary.json', 'w', encoding='utf-8') as f:
-        json.dump(higher_salary, f, indent=4, ensure_ascii=False)
-
-    key_word = input('введите ключевый слова для поиска вакансий ').lower().split()
-
-    key_word = manager.get_vacancies_with_keyword(key_word)
-    with open('result/key_word.json', 'w', encoding='utf-8') as f:
-        json.dump(key_word, f, indent=4, ensure_ascii=False)
-
-
-
-
-    # return avg_salary
+        if user_input_choose_action == 1:
+            count_vacancies = manager.get_companies_and_vacancies_count()
+            print(count_vacancies)
+            # with open('result/count_vacancies.json', 'w', encoding='utf-8') as f:
+            # json.dump(count_vacancies, f, indent=4, ensure_ascii=False)
+        elif user_input_choose_action == 2:
+            all_vacancies = manager.get_all_vacancies()
+            print(all_vacancies)
+            # with open('result/all_vacancies.json', 'w', encoding='utf-8') as f:
+            # json.dump(all_vacancies, f, indent=4, ensure_ascii=False)
+        elif user_input_choose_action == 3:
+            avg_salary = manager.get_avg_salary()
+            print(avg_salary)
+            # with open('result/avg_salary.json', 'w', encoding='utf-8') as f:
+            # json.dump(avg_salary, f, indent=4, ensure_ascii=False)
+        elif user_input_choose_action == 4:
+            higher_salary = manager.get_vacancies_with_higher_salary()
+            print(higher_salary)
+            # with open('result/higher_salary.json', 'w', encoding='utf-8') as f:
+            # json.dump(higher_salary, f, indent=4, ensure_ascii=False)
+        elif user_input_choose_action == 5:
+            key_word = input('введите ключевый слова для поиска вакансий ').lower().split()
+            search_word = manager.get_vacancies_with_keyword(key_word)
+            # with open('result/key_word.json', 'w', encoding='utf-8') as f:
+            # json.dump(key_word, f, indent=4, ensure_ascii=False)
+            print(search_word)
+        elif user_input_choose_action == 6:
+            break
+        else:
+            print('Вы выбрали неверный вариант')
 
 
 

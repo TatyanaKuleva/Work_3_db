@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 import requests
-import json
 import time
 
-from mypy.strconv import indent
+
 
 
 class Parser(ABC):
@@ -18,14 +17,14 @@ class Parser(ABC):
 class HeadHunterAPI(Parser):
     """Класс для работы с API HeadHunter и получения вакансий по ключевому слову"""
 
-    def  connect_api(self, keyword):
-        url = 'https://api.hh.ru/vacancies'
-        params = {'text': keyword, 'per_page':100}
+    def connect_api(self, keyword):
+        url = "https://api.hh.ru/vacancies"
+        params = {"text": keyword, "per_page": 100}
         response = requests.get(url, params=params)
         if response.status_code != 200:
-            print(f'Произoшла ошибка: {response.status_code}')
+            print(f"Произoшла ошибка: {response.status_code}")
             return None
-        data_response = response.json()['items']
+        data_response = response.json()["items"]
 
         return data_response
 
@@ -43,9 +42,9 @@ class HeadHunterAPI(Parser):
 
         for employer in emlpoyers_data:
             data_employer = {
-                'id': employer['id'],
-                'name': employer['name'],
-                'url_hh_employer': employer['alternate_url']
+                "id": employer["id"],
+                "name": employer["name"],
+                "url_hh_employer": employer["alternate_url"],
             }
             result_list_employer.append(data_employer)
 
@@ -63,14 +62,11 @@ class HeadHunterAPI(Parser):
             pages = 1
 
             while page < pages:
-                params = {
-                    'page': page,
-                    'per_page': 100  # Максимальное количество на странице
-                }
+                params = {"page": page, "per_page": 100}  # Максимальное количество на странице
                 response = requests.get(url, params=params)
                 data = response.json()
-                vacancies.extend(data['items'])
-                pages = data['pages']
+                vacancies.extend(data["items"])
+                pages = data["pages"]
                 page += 1
 
             vacancies_data.append(vacancies)
@@ -81,50 +77,44 @@ class HeadHunterAPI(Parser):
         result_list = []
         for list in vacancies_data:
             for vacancy in list:
-                id = vacancy.get('id', '')
-                name = vacancy.get('name', '')
-                url_vacancy = vacancy.get('alternate_url', '')
-                employer_id = vacancy.get('employer', {}).get('id', '')
-                employer_name = vacancy.get('employer', {}).get('name', '')
-                salary = vacancy.get('salary', '')
+                id = vacancy.get("id", "")
+                name = vacancy.get("name", "")
+                url_vacancy = vacancy.get("alternate_url", "")
+                employer_id = vacancy.get("employer", {}).get("id", "")
+                employer_name = vacancy.get("employer", {}).get("name", "")
+                salary = vacancy.get("salary", "")
                 if salary is not None:
-                    salary_from = salary['from']
+                    salary_from = salary["from"]
                     if salary_from is None:
                         salary_from = 0
-                    salary_to = salary['to']
+                    salary_to = salary["to"]
                     if salary_to is None:
                         salary_to = salary_from
-                    currency_salary = salary['currency']
+                    currency_salary = salary["currency"]
                 else:
                     salary_from = 0
                     salary_to = 0
-                    currency_salary = 'нет данных'
-                requirement = vacancy.get('snippet', {}).get('requirement', '')
-                responsibility = vacancy.get('snippet', {}).get('responsibility', '')
+                    currency_salary = "нет данных"
+                requirement = vacancy.get("snippet", {}).get("requirement", "")
+                responsibility = vacancy.get("snippet", {}).get("responsibility", "")
                 vacancy_data = {
-                    'id': id,
-                    'name':name,
-                    'salary_from': salary_from,
-                    'salary_to': salary_to,
-                    'salary_currency': currency_salary,
-                    'url_vacancy':url_vacancy,
-                    'employer_id': employer_id,
-                    'employer_name': employer_name,
-                    'requirement':requirement,
-                    'responsibility':responsibility
-                    }
+                    "id": id,
+                    "name": name,
+                    "salary_from": salary_from,
+                    "salary_to": salary_to,
+                    "salary_currency": currency_salary,
+                    "url_vacancy": url_vacancy,
+                    "employer_id": employer_id,
+                    "employer_name": employer_name,
+                    "requirement": requirement,
+                    "responsibility": responsibility,
+                }
                 result_list.append(vacancy_data)
 
         return result_list
 
 
-
-
-
-
-
-
-if __name__ == '__main__':
-    emp =HeadHunterAPI()
+if __name__ == "__main__":
+    emp = HeadHunterAPI()
     list = emp.get_employer_data(557534)
     print(list)
